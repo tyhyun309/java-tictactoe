@@ -12,13 +12,14 @@ public class TicTacToe {
   JFrame frame = new JFrame("Tic-Tac-Toe");
   JLabel textLabel = new JLabel();
   JPanel textPanel = new JPanel();
-  JPanel  boardPanel = new JPanel();
+  JPanel boardPanel = new JPanel();
 
   JButton[][] board = new JButton[3][3];
   String playerX = "X";
   String playerO = "O";
   String currentPlayer = playerX;
 
+  boolean gameOver = false;
 
   TicTacToe(){
     frame.setVisible(true);
@@ -40,32 +41,58 @@ public class TicTacToe {
     frame.add(textPanel, BorderLayout.NORTH);
 
     boardPanel.setLayout(new GridLayout(3,3));
-    boardPanel.setBackground(Color.black);
+    boardPanel.setBackground(Color.black); //border color
     frame.add(boardPanel);
 
     for (int r = 0; r < 3; r++){
       for (int c = 0; c < 3; c++){
         JButton tile = new JButton();
+        tile.setOpaque(true);
         board[r][c] = tile;
         boardPanel.add(tile);
-
-        tile.setBackground(Color.black);
-        tile.setForeground(Color.white);
+        // tile.setBorderPainted(false);
+        tile.setBackground(Color.darkGray); // not effective
+        tile.setForeground(Color.blue);
         tile.setFont(new Font("Arial", Font.BOLD, 120));
         tile.setFocusable(false);
         // tile.setText(currentPlayer);
 
         tile.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
+            if (gameOver) return;
             JButton tile = (JButton) e.getSource();
-            tile.setText(currentPlayer);
-
-            currentPlayer = currentPlayer == playerX ? playerO : playerX;
-            textLabel.setText(currentPlayer+"'s turn.");
+            if (tile.getText() == "") {
+              tile.setText(currentPlayer);
+              checkWinner();
+              if (!gameOver) {
+                currentPlayer = currentPlayer == playerX ?  playerO : playerX;
+                textLabel.setText(currentPlayer + "'s turn.");
+              }
+            }
           }
 
         });
       }
     }
+  }
+  void checkWinner(){
+    for (int r = 0; r < 3; r++){
+      if (board[r][0].getText() == "") continue;
+
+      if (board[r][0].getText() == board[r][1].getText() &&
+          board[r][1].getText() == board[r][2].getText()) {
+          for (int i  =  0; i < 3; i++){
+            setWinner(board[r][i]);
+          }
+          gameOver = true;
+          return;
+        }
+    }
+  }
+
+  void setWinner(JButton tile){
+    tile.setForeground(Color.green);
+    tile.setBackground(Color.black); // not effective
+    textLabel.setText(currentPlayer + " is the winner.");
   }
 }
