@@ -15,6 +15,7 @@ public class TicTacToe {
   JPanel boardPanel = new JPanel();
 
   JButton[][] board = new JButton[3][3];
+  JButton restartBtn = new JButton("Restart");
   String playerX = "X";
   String playerO = "O";
   String currentPlayer = playerX;
@@ -29,7 +30,6 @@ public class TicTacToe {
     frame.setResizable(false);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLayout(new BorderLayout());
-
     textLabel.setBackground(Color.darkGray);
     textLabel.setForeground(Color.white);
     textLabel.setFont(new Font("Arial", Font.BOLD, 50));
@@ -40,10 +40,14 @@ public class TicTacToe {
     textPanel.setLayout(new BorderLayout());
     textPanel.add(textLabel);
     frame.add(textPanel, BorderLayout.NORTH);
+    frame.add(restartBtn, BorderLayout.SOUTH);
+    restartBtn.setForeground(Color.red);
+    restartBtn.setFont(new Font("Arial", Font.BOLD, 40));
 
     boardPanel.setLayout(new GridLayout(3,3));
     boardPanel.setBackground(Color.black); //border color
     frame.add(boardPanel);
+
 
     for (int r = 0; r < 3; r++){
       for (int c = 0; c < 3; c++){
@@ -56,7 +60,12 @@ public class TicTacToe {
         tile.setForeground(Color.blue);
         tile.setFont(new Font("Arial", Font.BOLD, 120));
         tile.setFocusable(false);
-        // tile.setText(currentPlayer);
+
+        restartBtn.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e) {
+            restartGame();
+          }
+        });
 
         tile.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
@@ -72,7 +81,6 @@ public class TicTacToe {
               }
             }
           }
-
         });
       }
     }
@@ -145,5 +153,20 @@ public class TicTacToe {
     tile.setForeground(Color.orange);
     tile.setBackground(Color.black); // not effective
     textLabel.setText("Tie!");
+  }
+  // Method to reset the game state
+  void restartGame() {
+    for (int r = 0; r < 3; r++) {
+        for (int c = 0; c < 3; c++) {
+            board[r][c].setText(""); // Clear text on all buttons
+            board[r][c].setEnabled(true); // Enable all buttons
+            board[r][c].setBackground(null); // Reset button background
+            board[r][c].setForeground(Color.blue); // Reset button text color
+        }
+    }
+    currentPlayer = playerX; // Reset current player
+    textLabel.setText(currentPlayer + "'s turn."); // Reset text label
+    gameOver = false; // Reset game over state
+    turns = 0; // Reset number of turns
   }
 }
