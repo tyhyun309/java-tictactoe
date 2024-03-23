@@ -154,7 +154,7 @@ public class TicTacToe {
     tile.setBackground(Color.black); // not effective
     textLabel.setText("Tie!");
   }
-  // Method to reset the game state
+  //reset the game state
   void restartGame() {
     for (int r = 0; r < 3; r++) {
         for (int c = 0; c < 3; c++) {
@@ -164,9 +164,9 @@ public class TicTacToe {
             board[r][c].setForeground(Color.blue); // Reset button text color
         }
     }
-    currentPlayer = playerX; // Reset current player
-    textLabel.setText(currentPlayer + "'s turn."); // Reset text label
-    gameOver = false; // Reset game over state
-    turns = 0; // Reset number of turns
+    currentPlayer = playerX;
+    textLabel.setText(currentPlayer + "'s turn.");
+    gameOver = false;
+    turns = 0;
   }
 }
